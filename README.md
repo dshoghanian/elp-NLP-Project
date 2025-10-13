@@ -1,6 +1,11 @@
 # EPL News (Internal)
 
-
+Describe your research question(s): 
+Describe the potential data sources:
+Why the data is suitable for answering your question:
+What methods you plan to use:
+Who will benefit from your research:
+How?
 
 ## Clone the repo
 
