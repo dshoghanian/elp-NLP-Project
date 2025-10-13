@@ -1,11 +1,41 @@
 # EPL News (Internal)
 
-Describe your research question(s): 
-Describe the potential data sources:
-Why the data is suitable for answering your question:
-What methods you plan to use:
-Who will benefit from your research:
-How?
+
+### Research Questions
+- **RQ1 – Rumor credibility:** Can we quantify the credibility of Premier League transfer rumors and coaching changes from news text in near-real time?
+- **RQ2 – Impact on demand:** Do credible rumors or breaking news measurably shift **match-level demand proxies** (attendance where available, ticket resale activity if accessible, web attention) and **fan sentiment** in the short run?
+- **RQ3 – Moderators:** How do club context (recent form, table position), player profile (market value, position), and news tone/stance moderate these effects?
+
+### Potential Data Sources (and Why They Fit)
+- **The Guardian Open Platform (news + metadata):** High editorial standards, rich football coverage, consistent structure (dates, sections, headlines), and API access—ideal for extracting tone, stance, and entities at the article level.
+- **GDELT GKG (Global Knowledge Graph via BigQuery):** Massive, timestamped global news signal with sentiment/tone—useful for breadth, event timing, and cross-checking spikes beyond a single outlet.
+- **FBref / Football-Data.org (fixtures, results, context):** Timeline backbone (who/when/where) to align news with pre/post windows.
+- **Transfermarkt (transfer events & statuses):** Ground truth for whether a rumor was confirmed, associated fees, and dates—enables **rumor → outcome** evaluation.
+- *(Optional, if available)* **Ticketing/resale or web attention (e.g., Google Trends):** Strengthens the “demand” side; attendance and engagement proxies still enable a reasonable first pass.
+
+> Together these sources cover **text (news)**, **events (fixtures/transfers)**, and **outcomes (confirmation/demand)**—what we need to test credibility and impact.
+
+### Planned Methods
+- **Ingestion & cleaning:** API pulls (Guardian), SQL for GDELT; deduplication (URL/domain + text shingling), timezone normalization, article→club mapping.
+- **NLP features:**
+  - **NER** to tag players/clubs/competitions.
+  - **Sentiment / tone** features (lexicon + model-based).
+  - **Stance & hedging cues** (e.g., “close to,” “monitoring,” “agreed terms”) to score rumor credibility.
+  - **Topic tags** (transfer/contract/injury/managerial).
+- **Labeling & joins:** Link articles to fixtures (±k days); link rumors to outcomes via Transfermarkt.
+- **Analysis & modeling:**
+  - **Classification:** Predict rumor confirmation (logistic regression / tree-based).
+  - **Event-study style comparisons:** Pre/post news windows on demand proxies.
+  - **Controls/robustness:** Club and season fixed effects; recent form; opponent strength.
+- **Evaluation:** Precision/recall for confirmation predictions; effect sizes and confidence intervals for demand shifts.
+
+### Who Will Benefit—and How
+- **Clubs & analysts:** Earlier, data-driven read on which rumors are likely real → better scouting focus and communications planning.
+- **Media & platforms:** Credibility scoring helps curate high-quality stories and reduce noise, improving audience trust.
+- **Fans & communities:** Clearer context around news spikes reduces misinformation and hype fatigue.
+- **Researchers & students:** Reusable pipeline for linking text to events and demand analysis—portable beyond football.
+
+> **Limitations & ethics:** Respect source ToS; avoid disallowed scraping; no sharing of proprietary data; credibility scores are probabilistic and reported with uncertainty.
 
 ## Clone the repo
 
