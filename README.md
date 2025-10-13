@@ -1,5 +1,35 @@
 # EPL News (Internal)
 
+
+
+## Clone the repo
+
+Using **HTTPS**:
+```bash
+git clone https://github.com/<org-or-user>/<repo>.git
+cd <repo>
+```
+
+Using **SSH** (requires a configured SSH key):
+```bash
+git clone git@github.com:<org-or-user>/<repo>.git
+cd <repo>
+```
+
+Then set up your environment:
+```bash
+python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
+cp .env.example .env
+pip install -r requirements.txt
+```
+
+To push your first commit (if starting from local):
+```bash
+git add .
+git commit -m "init"
+git push -u origin main
+```
+
 Private repo for our group. Keep it simple.
 
 ## Setup
