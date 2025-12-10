@@ -31,15 +31,17 @@ Do clubs that dominate transfer narratives also dominate on the pitch and financ
 
 ---
 
-## Data Sources
+## Data Files
 
-| Source | Description |
-|--------|-------------|
-| Premier League Press | Transfer articles from major outlets |
-| Reddit | r/soccer and club subreddits |
-| Transfermarkt | Net spend and squad values |
-| Club Financials | Revenue and operating profit |
-| Match Data | Points, wins, points per game |
+All cleaned and analysis-ready datasets are located in the `data/` directory.
+
+| File | Description |
+|------|-------------|
+| `club_analysis_panel_2016_2022.csv` | Master regression panel with performance, finance, and narrative variables |
+| `club_network_centrality_2016_2022.csv` | Club-level centrality metrics from the press narrative network |
+| `club_risk_return_panel_2019_2025.csv` | Risk-return quadrant dataset for narrative vs performance analysis |
+| `club_yearly_press_reddit_centrality.csv` | Yearly press vs Reddit centrality comparison |
+| `press_footy_centrality.parquet` | High-resolution press network centrality metrics |
 
 ---
 
@@ -57,12 +59,15 @@ Raw Text (Press + Reddit)
 
 ---
 
-## Network Outputs
+## Notebook Files
 
-- Club-to-Club Transfer Narrative Network
-- Ego Graphs for Big Six and Key Outliers
-- Press vs Reddit Centrality Comparison
-- Influence Diffusion Visualizations
+All analysis is fully reproducible using the notebooks in the `notebook/` directory.
+
+| Notebook | Purpose |
+|----------|---------|
+| `network_analysis.ipynb` | Constructs the press narrative network and computes centrality metrics |
+| `press_ego_network_search.ipynb` | Interactive ego network exploration for individual clubs |
+| `Final_analysis.ipynb` | Full regression modeling, quadrant analysis, and results visualization |
 
 ---
 
@@ -74,4 +79,21 @@ Raw Text (Press + Reddit)
 - Presence of over-hyped under-performers and under-hyped over-performers  
 - Narrative strength enhances both financial leverage and sporting outcomes  
 
+---
 
+## Project Structure
+premier-league-nlp/
+│
+├── data/
+│ ├── club_analysis_panel_2016_2022.csv
+│ ├── club_network_centrality_2016_2022.csv
+│ ├── club_risk_return_panel_2019_2025.csv
+│ ├── club_yearly_press_reddit_centrality.csv
+│ └── press_footy_centrality.parquet
+│
+├── notebook/
+│ ├── network_analysis.ipynb
+│ ├── press_ego_network_search.ipynb
+│ └── Final_analysis.ipynb
+│
+└── README.md
