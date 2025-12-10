@@ -74,7 +74,4 @@ Raw Text (Press + Reddit)
 - Presence of over-hyped under-performers and under-hyped over-performers  
 - Narrative strength enhances both financial leverage and sporting outcomes  
 
----
-
-## Project Structure
 
