@@ -1,143 +1,80 @@
-# EPL News (Internal)
+# Premier League Transfer Narrative Analysis (NLP + Network Science)
 
+This project applies Natural Language Processing (NLP) and Network Analytics to study how media and fan transfer narratives relate to club performance and financial spending in the English Premier League (EPL) from 2016–2025.
 
-### Research Questions
-- **RQ1 – Rumor credibility:** Can we quantify the credibility of Premier League transfer rumors and coaching changes from news text in near-real time?
-- **RQ2 – Impact on demand:** Do credible rumors or breaking news measurably shift **match-level demand proxies** (attendance where available, ticket resale activity if accessible, web attention) and **fan sentiment** in the short run?
-- **RQ3 – Moderators:** How do club context (recent form, table position), player profile (market value, position), and news tone/stance moderate these effects?
+The project integrates:
+- Press transfer coverage  
+- Reddit fan discussions  
+- Club financials  
+- On-pitch performance  
+- Network centrality metrics  
 
-### Potential Data Sources (and Why They Fit)
-- **The Guardian Open Platform (news + metadata):** High editorial standards, rich football coverage, consistent structure (dates, sections, headlines), and API access—ideal for extracting tone, stance, and entities at the article level.
-- **GDELT GKG (Global Knowledge Graph via BigQuery):** Massive, timestamped global news signal with sentiment/tone—useful for breadth, event timing, and cross-checking spikes beyond a single outlet.
-- **FBref / Football-Data.org (fixtures, results, context):** Timeline backbone (who/when/where) to align news with pre/post windows.
-- **Transfermarkt (transfer events & statuses):** Ground truth for whether a rumor was confirmed, associated fees, and dates—enables **rumor → outcome** evaluation.
-- *(Optional, if available)* **Ticketing/resale or web attention (e.g., Google Trends):** Strengthens the “demand” side; attendance and engagement proxies still enable a reasonable first pass.
+to quantify how narrative attention ("hype") interacts with real-world success.
 
-> Together these sources cover **text (news)**, **events (fixtures/transfers)**, and **outcomes (confirmation/demand)**—what we need to test credibility and impact.
+---
 
-### Planned Methods
-- **Ingestion & cleaning:** API pulls (Guardian), SQL for GDELT; deduplication (URL/domain + text shingling), timezone normalization, article→club mapping.
-- **NLP features:**
-  - **NER** to tag players/clubs/competitions.
-  - **Sentiment / tone** features (lexicon + model-based).
-  - **Stance & hedging cues** (e.g., “close to,” “monitoring,” “agreed terms”) to score rumor credibility.
-  - **Topic tags** (transfer/contract/injury/managerial).
-- **Labeling & joins:** Link articles to fixtures (±k days); link rumors to outcomes via Transfermarkt.
-- **Analysis & modeling:**
-  - **Classification:** Predict rumor confirmation (logistic regression / tree-based).
-  - **Event-study style comparisons:** Pre/post news windows on demand proxies.
-  - **Controls/robustness:** Club and season fixed effects; recent form; opponent strength.
-- **Evaluation:** Precision/recall for confirmation predictions; effect sizes and confidence intervals for demand shifts.
+## Research Question
 
-### Who Will Benefit—and How
-- **Clubs & analysts:** Earlier, data-driven read on which rumors are likely real → better scouting focus and communications planning.
-- **Media & platforms:** Credibility scoring helps curate high-quality stories and reduce noise, improving audience trust.
-- **Fans & communities:** Clearer context around news spikes reduces misinformation and hype fatigue.
-- **Researchers & students:** Reusable pipeline for linking text to events and demand analysis—portable beyond football.
+Do clubs that dominate transfer narratives also dominate on the pitch and financially—and does narrative hype independently matter beyond money?
 
-> **Limitations & ethics:** Respect source ToS; avoid disallowed scraping; no sharing of proprietary data; credibility scores are probabilistic and reported with uncertainty.
+---
 
-## Clone the repo
+## Core Methods
 
-Using **HTTPS**:
-```bash
-git clone https://github.com/<org-or-user>/<repo>.git
-cd <repo>
-```
+- Natural Language Processing (spaCy, TF-IDF, Named Entity Recognition)
+- Network graph construction (NetworkX)
+- Centrality metrics (PageRank, Eigenvector, Degree)
+- Regression modeling and correlation analysis
+- Temporal panel data (2016–2025)
+- Ego network analysis
+- Quadrant risk-return analysis
 
-Using **SSH** (requires a configured SSH key):
-```bash
-git clone git@github.com:<org-or-user>/<repo>.git
-cd <repo>
-```
+---
 
-Then set up your environment:
-```bash
-python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
-cp .env.example .env
-pip install -r requirements.txt
-```
+## Data Sources
 
-To push your first commit (if starting from local):
-```bash
-git add .
-git commit -m "init"
-git push -u origin main
-```
+| Source | Description |
+|--------|-------------|
+| Premier League Press | Transfer articles from major outlets |
+| Reddit | r/soccer and club subreddits |
+| Transfermarkt | Net spend and squad values |
+| Club Financials | Revenue and operating profit |
+| Match Data | Points, wins, points per game |
 
-Private repo for our group. Keep it simple.
+---
 
-## Setup
-```bash
-python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-```
+## Pipeline Overview
 
-## Run (example)
-```bash
-python src/guardian_pull.py --from 2024-08-01 --to 2024-08-31 --section football --out data/guardian
-```
+Raw Text (Press + Reddit)  
+→ Entity Extraction (spaCy NER)  
+→ Club Mention Networks  
+→ Network Centrality Metrics  
+→ Merge With:
+- Net Spend  
+- Revenue  
+- Points per Game (PPG)  
+→ Statistical Modeling and Visualization  
 
+---
 
-## Data storage
-- Local path: `data/` (committed via `.gitkeep`, contents are gitignored).
-- The pull script writes JSONL files here unless you pass a different `--out`.
-- You can also point to cloud buckets later (e.g., GCS/S3) if needed.
+## Network Outputs
 
-## Repository structure (what everything is)
+- Club-to-Club Transfer Narrative Network
+- Ego Graphs for Big Six and Key Outliers
+- Press vs Reddit Centrality Comparison
+- Influence Diffusion Visualizations
 
-```
-.
-├─ src/                    # Project code
-│  └─ guardian_pull.py    # Script to fetch Guardian articles
-├─ docs/                   # Project docs (your uploaded files live here)
-├─ data/                   # Local data storage (ignored by git)
-│  └─ .gitkeep             # Placeholder so folder exists in repo
-├─ .github/workflows/      # CI configuration
-│  └─ ci.yml               # Minimal CI check
-├─ .env.example            # Example env vars (copy to .env; never commit secrets)
-├─ requirements.txt        # Python dependencies
-├─ .gitignore              # Ignore rules (data, env, caches, etc.)
-└─ README.md               # This guide
-```
+---
 
-### Key files explained
-- **src/guardian_pull.py** — Simple CLI to pull Guardian articles.
+## Key Findings
 
-  **Args:**
+- Strong positive relationship between press narrative centrality and club performance  
+- Big Six dominate both the narrative and performance space  
+- Narrative hype remains statistically significant even after controlling for spending  
+- Presence of over-hyped under-performers and under-hyped over-performers  
+- Narrative strength enhances both financial leverage and sporting outcomes  
 
-  - `--from` (`YYYY-MM-DD`): start date
+---
 
-  - `--to` (`YYYY-MM-DD`): end date
+## Project Structure
 
-  - `--section` (default `football`): Guardian section
-
-  - `--out` (default `data/guardian`): output folder
-
-  **Env:** `GUARDIAN_API_KEY` must be set in `.env`.
-
-  **Output:** JSONL files in the `--out` directory.
-
-- **docs/** — Place design notes, meeting notes, and shared write-ups here.
-
-- **data/** — Local cache for raw files; kept out of git. Change with `DATA_DIR` in `.env` if you like.
-
-- **.env.example** — Template for environment variables; copy to `.env` and fill in values.
-
-- **requirements.txt** — Minimal deps (`requests`, `python-dotenv`). Add more as needed.
-
-- **.github/workflows/ci.yml** — Tiny CI that installs deps and runs a quick check.
-
-- **.gitignore** — Prevents committing large/binary data and secrets by default.
-
-
-### Typical workflow
-1. Clone → create & activate venv → `cp .env.example .env` → set `GUARDIAN_API_KEY`.
-
-2. Run a small pull:
-
-   ```bash
-   python src/guardian_pull.py --from 2024-08-01 --to 2024-08-07 --section football --out data/guardian
-   ```
-
-3. Commit code/doc changes in small PRs.
